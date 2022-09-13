@@ -33,7 +33,21 @@ Make sure you are in the root of the repository [...]/rabbitmq-messenger/"
   [...]
 ```
 
-5 - Run the server
+5 - Configure the rabbitmq server in connection.py
+```bash
+  [...]
+     self.connection_type = ''
+     self.queue = ''
+     self.host = ''
+     self.port = ''
+     self.route = ''
+     self.login = ''
+     self.password = ''
+     self.url = ''
+  [...]
+```
+
+6 - Run the server
 ```bash
   python manage.py runserver
 ```
