@@ -1,0 +1,127 @@
+{% load static %}
+<link href="{% static 'css/bootstrap337.min.css' %} rel=" stylesheet" id="bootstrap-css">
+<!------ Include the above in your HEAD tag ---------->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Messenger App</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
+  <link rel="stylesheet" href="{% static 'css/bootstrap337.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+</head>
+
+<body>
+
+  <div class="container app">
+    <div class="row app-one">
+
+      <div class="col-sm-4 side">
+        <div class="side-one">
+          <!-- Heading -->
+          <div class="row heading">
+            <div class="btn">
+              <a href="{% url 'addcontact' name %}" class="btn btn-success"><span>+ Add Contact</span></a>
+              <a href="{% url 'addgroup' name %}" class="btn btn-success"><span>+ Add Group</span></a>
+            </div>
+          </div>
+          <!-- Heading End -->
+
+          <!-- sideBar -->
+          <div class="row sideBar" id="menuup">
+          </div>
+          <div class="row sideBar" id="menudown">
+          </div>
+          <!-- Sidebar End -->
+        </div>
+      </div>
+
+
+      <!-- New Message Sidebar End -->
+
+      <!-- Conversation Start -->
+      <div class="col-sm-8 conversation">
+        {% block content %}
+        {% endblock %}
+      </div>
+      <!-- Conversation End -->
+    </div>
+    <!-- App One End -->
+  </div>
+
+  <!-- App End -->
+</body>
+
+<script   src="https://code.jquery.com/jquery-3.1.1.min.js"   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="   crossorigin="anonymous"></script>
+<script>
+  $(document).ready(function () {
+
+    setInterval(function () {
+      $.ajax({
+        type: 'GET',
+        url: "/getcontacts",
+        success: function (response) {
+          $("#menuup").empty();
+          for (var key in response.contacts) {
+            var temp = "<div class='row sideBar-body'>" + 
+                        "<div class='col-sm-9 col-xs-9 sideBar-main'>" +
+                          "<div class='row'>" +
+                            "<div class='col-sm-8 col-xs-8 sideBar-name'>" +
+                              `<a href= "{% url 'chatcontact' name 0 %}" class='details'> `.replace('0', response.contacts[key].id) +
+                                "<span class='name-meta'>" +
+                                  response.contacts[key].name +
+                                "</span>" +
+                              "</a>" +
+                            "</div>" +
+                          "</div>" +
+                        "</div>" +
+                       "</div>";
+            $("#menuup").append(temp);
+          }
+        },
+        error: function (response) {
+          alert('An error occured')
+        }
+      });
+    }, 1000);
+  })
+</script>
+
+<script>
+  $(document).ready(function () {
+
+    setInterval(function () {
+      $.ajax({
+        type: 'GET',
+        url: "/getgroups",
+        success: function (response) {
+          $("#menudown").empty();
+          for (var key in response.groups) {
+            var temp = "<div class='row sideBar-body'>" + 
+                        "<div class='col-sm-9 col-xs-9 sideBar-main'>" +
+                          "<div class='row'>" +
+                            "<div class='col-sm-8 col-xs-8 sideBar-name'>" +
+                              `<a href= "{% url 'chatgroup' name 0 %}" class='details'> `.replace('0', response.groups[key].id) +
+                                "<span class='name-meta'>" +
+                                  response.groups[key].name +
+                                "</span>" +
+                              "</a>" +
+                            "</div>" +
+                          "</div>" +
+                        "</div>" +
+                       "</div>";
+            $("#menudown").append(temp);
+          }
+        },
+        error: function (response) {
+          alert('An error occured')
+        }
+      });
+    }, 1000);
+  })
+</script>
+
+</html>

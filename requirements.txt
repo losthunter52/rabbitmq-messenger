@@ -1,0 +1,5 @@
+django
+django_thread
+whitenoise
+pika
+django-widget-tweaks
