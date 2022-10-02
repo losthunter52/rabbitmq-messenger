@@ -3,7 +3,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, JsonResponse
 from messenger.models import Contact, ContactMessage, Group, GroupMessage
 from .connection import Connection
-import json
+import json, requests, ast
+from requests.auth import HTTPBasicAuth
 from .forms import ContactForm, GroupForm
 from .threads import SimpleSender, PubSubSender, SimpleConsumer, PubSubConsumer
 
@@ -22,6 +23,17 @@ def checkauth(request):
     consumer = SimpleConsumer(name)
     consumer.start()
     groups = Group.objects.all()
+    hello, created = Group.objects.get_or_create(name="Welcome", group="hello")
+    hello.save()
+    consumer = PubSubConsumer(hello.group)
+    consumer.start()
+    dictionary = {"SENDER": name,
+                  "MESSAGE": "Olá, estou online",
+                  "GROUP": 'hello'}
+    json_encoded = encoder(dictionary)
+    sender = PubSubSender(hello.group, json_encoded)
+    sender.start()
+    sender.join()
     for group in groups:
         consumer = PubSubConsumer(group.group)
         consumer.start()

@@ -3,3 +3,4 @@ django_thread
 whitenoise
 pika
 django-widget-tweaks
+requests

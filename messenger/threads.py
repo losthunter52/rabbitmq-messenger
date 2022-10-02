@@ -76,6 +76,8 @@ class PubSubConsumer(Thread):
         new_message = GroupMessage.objects.create(
             message=json['MESSAGE'], origin=json['SENDER'], group=group)
         new_message.save()
+        contact, created = Contact.objects.get_or_create(name=json['SENDER'])
+        contact.save()
 
     def run(self):
         channel = self.connection.channel()

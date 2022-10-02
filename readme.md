@@ -20,10 +20,11 @@ Make sure you are in the root of the repository [...]/rabbitmq-messenger/"
   pip install -r requirements.txt
 ```
 
-3 - Perform the migrations
+3 - Perform the migrations and collectstatic
 ```bash
   python manage.py makemigrations
   python manage.py migrate
+  python manage.py collectstatic
 ```
 
 4 - Configure the secret key in settings.py
@@ -36,8 +37,7 @@ Make sure you are in the root of the repository [...]/rabbitmq-messenger/"
 5 - Configure the rabbitmq server in connection.py
 ```bash
   [...]
-     self.connection_type = ''
-     self.queue = ''
+     self.connection_type = 'A'
      self.host = ''
      self.port = ''
      self.route = ''

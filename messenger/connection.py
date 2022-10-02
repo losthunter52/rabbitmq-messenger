@@ -4,14 +4,13 @@ class Connection:
 
     #init method
     def __init__(self):
-        self.connection_type = ''
-        self.queue = ''
+        self.connection_type = 'B'
         self.host = ''
         self.port = ''
         self.route = ''
         self.login = ''
         self.password = ''
-        self.url = ''
+        self.url = 'amqps://dlolacoj:8B7x2v4XCahiMcIpfnBEhoAelyvQEUro@jackal.rmq.cloudamqp.com/dlolacoj'
 
     def start_connection(self):
 

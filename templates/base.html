@@ -9,6 +9,7 @@
   <title>Messenger App</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
   <link rel="stylesheet" href="{% static 'css/bootstrap337.min.css' %}">
   <link rel="stylesheet" href="{% static 'css/base.css' %}">
@@ -20,16 +21,24 @@
       <div class="col-sm-4 side">
         <div class="side-one">
           <div class="row heading">
-            <p align="right" style="font-size:160%;">Contacts <a href="{% url 'addcontact' name %}"
-                class="btnsend btn-success"> +</a></p>
+            <div class="col-sm-3 col-xs-3 heading-avatar">
+              <div class="heading-avatar-icon">
+                <img src="{% static 'img/avatar.png' %}">
+              </div>
+            </div>
+            <div class="col-sm-4 col-xs-4 " style="font-size:160%;">
+              <p>{{name}}</p>
+            </div>
+            <div class="col-sm-1 col-xs-1  heading-dot  pull-right">
+              <p align="right"><a href="{% url 'addgroup' name %}"><i class="fa fa-comments fa-2x  pull-right"
+                    aria-hidden="true"></i></a></p>
+            </div>
+            <div class="col-sm-1 col-xs-1  heading-dot  pull-right">
+              <p align="right"><a href="{% url 'addcontact' name %}"><i class="fa fa-user-plus fa-2x  pull-right"
+                    aria-hidden="true"></i></a></p>
+            </div>
           </div>
-          <div class="row sideBar" id="menuup">
-          </div>
-          <div class="row heading">
-            <p align="right" style="font-size:160%;">Groups <a href="{% url 'addgroup' name %}"
-                class="btnsend btn-success"> +</a></p>
-          </div>
-          <div class="row sideBar" id="menudown">
+          <div class="row sideBar" id="menu">
           </div>
         </div>
       </div>
@@ -45,13 +54,13 @@
 <script>
   $(document).ready(function () {
     setInterval(function () {
+      $("#menu").empty();
       $.ajax({
         type: 'GET',
         url: "/getcontacts",
         success: function (response) {
-          $("#menuup").empty();
           for (var key in response.contacts) {
-            var temp = "<div class='row sideBar-body'>" +
+            var temp1 = "<div class='row sideBar-body'>" +
               "<div class='col-sm-9 col-xs-9 sideBar-main'>" +
               "<div class='row'>" +
               "<div class='col-sm-8 col-xs-8 sideBar-name'>" +
@@ -64,41 +73,33 @@
               "</div>" +
               "</div>" +
               "</div>";
-            $("#menuup").append(temp);
+            $("#menu").append(temp1);
           }
-        },
-        error: function (response) {
-          alert('An error occured')
-        }
-      });
-    }, 1000);
-  })
-</script>
-<script>
-  $(document).ready(function () {
-
-    setInterval(function () {
-      $.ajax({
-        type: 'GET',
-        url: "/getgroups",
-        success: function (response) {
-          $("#menudown").empty();
-          for (var key in response.groups) {
-            var temp = "<div class='row sideBar-body'>" +
-              "<div class='col-sm-9 col-xs-9 sideBar-main'>" +
-              "<div class='row'>" +
-              "<div class='col-sm-8 col-xs-8 sideBar-name'>" +
-              `<a href= "{% url 'chatgroup' name 0 %}" class='details'> `.replace('0', response.groups[key].id) +
-              "<span class='name-meta'>" +
-              response.groups[key].name +
-              "</span>" +
-              "</a>" +
-              "</div>" +
-              "</div>" +
-              "</div>" +
-              "</div>";
-            $("#menudown").append(temp);
-          }
+          $.ajax({
+            type: 'GET',
+            url: "/getgroups",
+            success: function (response) {
+              for (var key in response.groups) {
+                var temp = "<div class='row sideBar-body'>" +
+                  "<div class='col-sm-9 col-xs-9 sideBar-main'>" +
+                  "<div class='row'>" +
+                  "<div class='col-sm-8 col-xs-8 sideBar-name'>" +
+                  `<a href= "{% url 'chatgroup' name 0 %}" class='details'> `.replace('0', response.groups[key].id) +
+                  "<span class='name-meta'>" +
+                  response.groups[key].name +
+                  "</span>" +
+                  "</a>" +
+                  "</div>" +
+                  "</div>" +
+                  "</div>" +
+                  "</div>";
+                $("#menu").append(temp);
+              }
+            },
+            error: function (response) {
+              alert('An error occured')
+            }
+          });
         },
         error: function (response) {
           alert('An error occured')

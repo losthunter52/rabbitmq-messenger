@@ -30,8 +30,37 @@
                 success: function (response) {
                     $("#conversation").empty();
                     for (var key in response.messages) {
-                        var temp = "<div class='row message-body msgbox darker'><b>" + response.messages[key].origin + " Says:" + "</b><p>" + response.messages[key].message + "</p><p class='time-right'>" + response.messages[key].date + "</p></div><br>";
+                        if (response.messages[key].origin == "{{name}}"){
+                            var temp ='<div class="row message-body">'+
+                                                        '<div class="col-sm-12 message-main-sender">'+
+                                                            '<div class="sender">'+
+                                                                "<b>" + response.messages[key].origin + " Says: </b>" +
+                                                                '<div class="message-text">'+
+                                                                    response.messages[key].message +
+                                                                '</div>'+
+                                                                '<p class="message-time pull-right">'+
+                                                                    response.messages[key].date +
+                                                                '</p>'+
+                                                            '</div>'+
+                                                        '</div>'+
+                                                    '</div>';
                         $("#conversation").append(temp);
+                        } else {
+                        var temp ='<div class="row message-body">'+
+                            '<div class="col-sm-12 message-main-receiver">'+
+                                '<div class="receiver">'+
+                                    "<b>" + response.messages[key].origin + " Says: </b>" +
+                                    '<div class="message-text">'+
+                                        response.messages[key].message +
+                                    '</div>'+
+                                    '<p class="message-time pull-right">'+
+                                        response.messages[key].date +
+                                    '</p>'+
+                                '</div>'+
+                            '</div>'+
+                        '</div>';
+                        $("#conversation").append(temp);
+                                    }
                     }
                 },
                 error: function (response) {
